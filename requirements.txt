@@ -1,0 +1,9 @@
+daphne==3.0.1
+dacite==1.*
+falcon==3.0.0b1
+requests==2.24.0
+pytest==5.4.3
+requests_toolbelt==0.9.1
+uvicorn
+whitesource_common
+websockets

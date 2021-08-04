@@ -1,0 +1,22 @@
+whitesource-api-extension:
+  jobs:
+    manual-release:
+      steps:
+        lint: ~
+        release_to_pypi:
+          depends: ['lint']
+      traits:
+        component_descriptor: ~
+        version:
+          preprocess: 'finalize'
+          inject_effective_version: True
+        publish:
+          dockerimages:
+            whitesource-api-extension-image:
+              registry: 'gcr-readwrite'
+              image: 'eu.gcr.io/gardener-project/cc/whitesource-api-extension'
+              dockerfile: 'Dockerfile'
+              tag_as_latest: True
+        release:
+          nextversion: 'bump_minor'
+          release_notes_policy: disabled
