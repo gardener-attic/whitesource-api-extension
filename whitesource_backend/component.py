@@ -265,5 +265,5 @@ def run_whitesource_scan(
     return subprocess.run(
         args,
         cwd=wss_agent_dir,
-        capture_output=True,
+        capture_output=False,
     )
