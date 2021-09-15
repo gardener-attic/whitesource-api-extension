@@ -143,13 +143,14 @@ class Component:
                 os.unlink(wss_agent_hardlink_path)
 
                 if result.returncode == 0:
-                    plogger.info('scan finished successfully')
-                    res = _build_scan_result_response(successful=True,
-                                                      message='agent done (successfully)')
+                    agent_log_str = (result.stdout.decode('utf-8') or '')
                 else:
-                    msg = _check_err_result(result=result)
-                    res = _build_scan_result_response(successful=False,
-                                                      message=msg)
+                    agent_log_str = (result.stderr.decode('utf-8') or '') + (result.stdout.decode('utf-8') or '')
+
+                res = _build_scan_result_response(
+                    successful=True if result.returncode == 0 else False,
+                    message=agent_log_str,
+                )
 
                 await ws.send_text(json.dumps(dataclasses.asdict(res)))
 
@@ -265,5 +266,5 @@ def run_whitesource_scan(
     return subprocess.run(
         args,
         cwd=wss_agent_dir,
-        capture_output=False,
+        capture_output=True,
     )
