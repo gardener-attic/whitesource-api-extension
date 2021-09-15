@@ -145,7 +145,8 @@ class Component:
                 if result.returncode == 0:
                     agent_log_str = (result.stdout.decode('utf-8') or '')
                 else:
-                    agent_log_str = (result.stderr.decode('utf-8') or '') + (result.stdout.decode('utf-8') or '')
+                    agent_log_str = (result.stderr.decode('utf-8') or '') + \
+                    (result.stdout.decode('utf-8') or '')
 
                 res = _build_scan_result_response(
                     successful=True if result.returncode == 0 else False,
