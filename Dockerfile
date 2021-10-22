@@ -19,7 +19,7 @@ RUN apk add --no-cache gcc \
     py3-pip \
   && apk add --no-cache dep \
     go \
-    godep \
+    dep \
   && apk add --no-cache npm \
   # symlink needed for whitesource agent to check python coding
   && ln -s /usr/bin/python3 /usr/bin/python \
