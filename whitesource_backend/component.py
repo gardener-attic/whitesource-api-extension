@@ -199,10 +199,11 @@ def _add_configuration(
     ws_config,
 ):
     for e in [
-        'requesterEmail={ws_config.requesterEmail}',
+        f'requesterEmail={ws_config.requesterEmail}',
         'go.collectDependenciesAtRuntime=true',
         'failErrorLevel=ALL',
         'fileSystemScan=true',
+        'resolveAllDependencies=true',
     ]:
         file.write(f'\n{e}')
 
