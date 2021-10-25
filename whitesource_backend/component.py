@@ -204,6 +204,7 @@ def _add_configuration(
         'failErrorLevel=ALL',
         'fileSystemScan=true',
         'resolveAllDependencies=true',
+        'python.installVirtualEnv=true'
     ]:
         file.write(f'\n{e}')
 
