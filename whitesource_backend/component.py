@@ -153,6 +153,7 @@ class Component:
                     message=agent_log_str,
                 )
 
+                await ws.send_text(str(result.returncode))
                 await ws.send_text(json.dumps(dataclasses.asdict(res)))
 
         except falcon.WebSocketDisconnected:
@@ -174,21 +175,6 @@ def _build_scan_result_response(
     return res
 
 
-def _check_err_result(result: subprocess.CompletedProcess):
-    err_string = (result.stderr.decode('utf-8') or '') + (result.stdout.decode('utf-8') or '')
-    if result.returncode == 251:
-        logger.error(f'Error: {result.returncode}. invalid userKey or apiKey')
-        return f'{result.returncode}: invalid userKey or apiKey\n{err_string}'
-
-    elif result.returncode == 252:
-        logger.error(f'Error: {result.returncode}. Invalid productToken or wss.url')
-        return f'{result.returncode}: invalid productToken or wss.url\n{err_string}'
-
-    else:
-        logger.error(f'scan finished with {result.returncode}. Unknown error code')
-        return f'{result.returncode}: unknown error code\n{err_string}'
-
-
 def generate_config(
     wss_agent_dir: str,
     java_path: str,
@@ -208,6 +194,19 @@ def generate_config(
     )
 
 
+def _add_configuration(
+    file,
+    ws_config,
+):
+    for e in [
+        'requesterEmail={ws_config.requesterEmail}',
+        'go.collectDependenciesAtRuntime=true',
+        'failErrorLevel=ALL',
+        'fileSystemScan=true',
+    ]:
+        file.write(f'\n{e}')
+
+
 def _scan_component(
     wss_agent_dir: str,
     component_path: str,
@@ -221,7 +220,10 @@ def _scan_component(
     )
 
     with open(os.path.join(wss_agent_dir, 'wss-generated-file.config'), 'a') as config_file:
-        config_file.write(f'\nrequesterEmail={ws_config.requesterEmail}')
+        _add_configuration(
+            file=config_file,
+            ws_config=ws_config,
+        )
         if ws_config.extraWsConfig:
             for key, value in ws_config.extraWsConfig.items():
                 config_file.write(f'\n{key}={value}')
