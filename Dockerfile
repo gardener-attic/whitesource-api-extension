@@ -26,6 +26,7 @@ RUN apk add --no-cache gcc \
   && npm install -g yarn \
   && pip3 install --upgrade pip \
   && pip3 install -r requirements.txt
+  && curl -sSL https://install.python-poetry.org | python3 -
 
 USER appuser
 
