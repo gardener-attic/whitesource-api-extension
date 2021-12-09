@@ -33,5 +33,6 @@ USER appuser
 
 ENV GO111MODULE=on
 ENV PYTHONPATH "/whitesource_backend/:/home/appuser/.local/bin"
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/appuser/.local/bin"
 
 ENTRYPOINT ["python", "-m", "app", "--port", "8000"]
