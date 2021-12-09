@@ -7,6 +7,7 @@ COPY whitesource-fs-agent.config .
 COPY requirements.txt .
 
 RUN apk add --no-cache gcc \
+    curl \
     git \
     bash \
     libressl-dev \
